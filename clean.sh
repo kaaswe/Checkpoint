@@ -25,8 +25,6 @@ rm -rf $SMARTLOGDIR/data/*
 # DLP events
 $DLPDIR/scripts/dlpcleanup
 
-exit 0;
-
 # Smart event database - stop here if you want to just clean up the logs not smartevent
 cpstop
 $CPDIR/database/postgresql/util/PostgreSQLCmd start
