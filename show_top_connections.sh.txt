@@ -1,0 +1,17 @@
+#!/bin/bash
+
+node=`cphaprob stat | grep local | awk '{print $5}'`
+conn=`fw tab -t connections -s | grep connections | awk '{print $4 " PEAK: " $5}'`
+
+echo -e "This FW node is the :" $node
+echo -e '\n'
+
+echo -e "Current Total conn: " $conn
+echo -e '\n'
+
+echo -e "Top 10 Source connections:"
+fwaccel conns | awk '{print $1}' | sort | uniq -c | sort -n -r | head -n 10
+echo -e '\n'
+
+echo -e "Top 10 Destination connections:"
+fwaccel conns | awk '{print $3}' | sort | uniq -c | sort -n -r | head -n 10
