@@ -1,4 +1,5 @@
 #!/bin/bash
+# Tested on R77.30
 
 #For logs
 fw logswitch
