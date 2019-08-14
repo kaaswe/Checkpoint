@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# /usr/local/bin/hex2ip
+
+[ -z $1 ] && echo "Please specify an IP in HEX" && exit
+echo " HEX '`echo 00000000$1 | tail -c 9`' IP = `printf "%d." $(echo 00000000$1 | tail -c 9 | sed 's/../0x& /g' | tr ' ' '\n') | sed 's/\.$/\n/'`"
