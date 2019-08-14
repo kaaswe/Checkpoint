@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# /usr/local/bin/ip2hex
+
+[ -z $1 ] && echo "Please specify an IP" && exit
+echo " IP '$1' in HEX = `echo 00000000$(printf "%x" $(echo $1 | sed 's/\./ /g')) | tail -c 9`"
