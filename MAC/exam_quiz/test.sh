@@ -53,7 +53,9 @@ do
 
         # printf "${line}  \n"
         (( count++ ))
-done < "$myPath/question.txt"
+done < "$myPath/${file[$choice]}"
+
+# done < "$myPath/question.txt"
 }
 
 displayOrder()
@@ -75,6 +77,21 @@ do
 done
 }
 
+####################################33
+# list files
+####################################
+list_files()
+{
+c=1
+for file in *.txt
+do
+        file[$c]=$file
+        printf "$c - ${file[$c]}\n" | sed 's/.txt//g'
+        (( c++ ))
+done
+}
+
+
 ####################################
 ##### Main
 ####################################
@@ -86,8 +103,10 @@ clear
 printf "##################\n"
 printf "# ${BRed}Exam Prepp${NC}     #\n"
 printf "##################\n\n"
+list_files
+read -p "Choose exam: " choice
 
-printf "1. Random questions or\n2. Questions in sequense?\n\n"
+printf "\n\n1. Random questions or\n2. Questions in sequense?\n\n"
 read -p 'Choose' order
 readfile
 printf "\n\nReading of file sucessful?\nThis test contains ${nr} questions.\n"
