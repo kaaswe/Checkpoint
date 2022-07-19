@@ -1,10 +1,16 @@
 #!/bin/bash
 #
 # Question and answers in random or squenze by Jan Larsson 2022-07-15 Info@janlarsson.net
+#
+# Version 1.1
+# 2022-07-19 version 1.1 
+# - add option to move back to previous question. 
+# - stop showing A: in front of answers.
+#
 # create a file named 'question.txt' in the same folder as this script
-# syntax in file
-# Q: a Question?
-# A: an answer
+# syntax in file (note: % needs to be escaped with %% in text, sorry)
+# Q: To have the answer show %this%?
+# A: You need to  write %%this%% in the file.
 # A: the answer can be several lines.
 # --
 # Q: Next question, that also can be on several lines.
@@ -47,7 +53,7 @@ do
 	if [[ ${line:0:2} == "A:" ]]
 	then
 		set="A"
-		answer[$nr]+=${line}"\n"
+		answer[$nr]+=${line:2}"\n"
                 printf "${answer[$nr]} \n"
 	fi
 
@@ -66,11 +72,18 @@ do
 	clear
 	printf "${question[$orderNr]} \n\n"
         read -p 'Enter to show Answer'
-        printf "\n${answer[$orderNr]} \n\n"
-	read -p 'Next Question (or enter nr): ' manualNr
+	printf "\n"
+        printf "${answer[$orderNr]}"
+	printf "\n\n"
+	read -p 'Next Question Enter, (P)revious or enter a NR: ' manualNr
 	if [[ ${manualNr} ]]
 	then
-		orderNr=${manualNr}
+		if [[ ${manualNr} == "p" ]]
+		then
+			(( orderNr-- ))
+		else
+			orderNr=${manualNr}
+		fi
 	else
 		(( orderNr++ ))
 	fi
