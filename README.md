@@ -5,3 +5,6 @@ Checkpoint scripts
 - ip2hex - convert IP
 - hex2ip - convert IP
 - term.sh - Bash script for Mac to open SSH terminals based on text lists as input.
+
+Check Point Conectivity script
+https://github.com/billygr/CheckPoint/blob/master/sk83520.sh
