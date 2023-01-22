@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# SSH Menu script version 1.0.2  by Jan Larsson 2020-05-24 Info@janlarsson.net
+# SSH Menu script version 1.0.3  by Jan Larsson 2023-01-22 Info@janlarsson.net
 # This script lists SSH sessions to servers and builds the menu dynamically by the filenames.
 # Note: all .txt files in the current folder will be part of the menu.
 
@@ -22,6 +22,14 @@ myPath=$PWD
 listServers()
 {
 clear
+
+if [[ $choice -eq $c ]]
+then
+	open -a Terminal.app ~/Documents
+	return
+	
+fi
+
 printf "################\n"
 printf "# ${BRed}SSH sessions${NC} #\n"
 printf "################\n\n"
@@ -49,6 +57,12 @@ printf "\nx. back\n\n"
 ############################
 selectFromList()
 {
+
+if [[ $choice -eq $c ]]
+then
+	return
+fi
+
 read -p 'server: ' server
 if [[ server -eq "x" ]]
 then
@@ -62,6 +76,7 @@ fi
 # ssh ${line[$server]}	
 }
 
+
 ####################################33
 # list files
 ####################################
@@ -71,9 +86,10 @@ c=1
 for file in *.txt
 do
 	file[$c]=$file
-	printf "$c - ${file[$c]}" | sed 's/.txt//g'
+	printf "$c - ${file[$c]}\n" | sed 's/.txt//g'
 	(( c++ ))
 done
+printf "$c - Terminal\n"
 }
 
 ####################################
