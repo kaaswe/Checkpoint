@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# Version 0.2 - Honeypot checks
+# Version 0.3 - Honeypot checks
+# Includes a separate file for settings.sh
 # 2023-01-22
 
 # Some simple checks to detect abnormal behavior and alert on them.
@@ -17,6 +18,7 @@
 ### How it works.
 # -this script should be run on an interval from crontab, like */1 every minute.
 # -if any of the 5 procedure calls in the script alerts and sets the status=1 an external notify will be done. In this case update a dashboard in Domoticz.
+# -all variables are set and loaded on each run from the settings.sh
 
 ### Tweak
 # a false positive process can be whitelisted in the file exceptions.txt
@@ -35,6 +37,8 @@ alertType="100000000"
 # 00001000 - Md5check honeypot files
 # 00010000 - Honeypot files read date altered.
 
+
+
 ##############################################
 ### This needs to be prepared:
 ##############################################
@@ -44,38 +48,21 @@ alertType="100000000"
 # 'md5sum filename.ext >> md5check.txt'
 
 ## 2.
-# Set the current number of users in your system.
+# Set the current number of users in your system. remember to update this count if you add any new users, or you'll get alerted.
 # check the current count of users, run cat /etc/passwd | wc -l
-normal_user_count=43
+normal_user_count=48
 
 ## 3.
-# Set the path for the script
-scriptPath="/home/username/Documents/scripts"
+# The settings.sh file has to be updated with all the variables you wish.
 
-## 4.
-# path where to store the outcome of the "prevent backup status".
-# In my setup this file is checked if exists by external backup program
-blpath=/mnt/device/backups
-
-## 5.
-# NAS_alert_IP - This is the external address to Domoticz that will set the dummy device status.
-# if you don't have any external dashboard just remove the curl line in the procedure and replace it with anything you like.
-nas_alert_ip="10.10.10.10:443"
-
-# 6.
-## Honeypot files path and access date.
-# This check can be extended to add another set of folders starting with a late character like zoom, incase the malware works in reversed order.
-# in the folders below, make sure to create 2 files, one with a low naming and one high. These are dummyfiles and you should never touch them as we are reading the accessed date on the files.
-honeypot_file_01="/mnt/device/user_1/_first"
-honeypot_file_01_date="20230121"
-
-honeypot_file_02="/mnt/device/user_2/_first"
-honeypot_file_02_date="20220208"
 
 ###########################################################
 ###########################################################
 
 ###### Don't touch below
+# Reads and loads all the settings
+myPath=$PWD
+source $myPath/settings.sh
 status=0
 alertFile="$scriptPath/alertFile.txt"
 honeypotPath="$scriptPath/honeypot.log"
@@ -86,11 +73,26 @@ exceptions="$scriptPath/exceptions.txt"
 ##############################################
 check_dependencies()
 {
-if [[ -f "$scriptPath/md5check.txt" ]] ; then
-	echo "MD5 files exists for checking."
+
+if [[ -f "$myPath/settings.sh" ]] ; then
+        echo "Settings.sh file exists and we are good to run."
 else
-	echo "You need to create the md5check.txt file as instructed in step 1."
+        echo "You need to edit the settings.sh file as instructed in step 3."
+        exit 0
+fi
+
+if [[ "$ImDone" -eq "1" ]] ; then
+	echo "Ready to rock."
+else
+	echo "You have not completed the settings-file."
 	exit 0
+fi
+
+if [[ -f "$scriptPath/md5check.txt" ]] ; then
+        echo "MD5 files exists for checking."
+else
+        echo "You need to create the md5check.txt file as instructed in step 1."
+        exit 0
 fi
 
 if [[ -f "$exceptions" ]] ; then
@@ -265,8 +267,3 @@ while read line; do
 #    sleep 60
 # done
 
-unset my_tmp
-unset my_ps
-unset count
-unset honeypot_file_01
-unset honeypot_file_02
