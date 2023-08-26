@@ -18,10 +18,11 @@
 # A: Do you get it?
 # --
 #
-# When this code was written only God and I knew the content,
+# Dear programmer:
+# When this code was written, only God and I knew how it worked.
 # Today only God does.
-# Don't think you can improve the code, you will certanly fail and waste your time.
-# If you still are going to try, please update the counter below:
+# Therefore, if you are trying to optimize this routine and it fails (most surely)
+# please update this counter as a warning to the next person.
 #
 # wastedHoursTrying=254
 
