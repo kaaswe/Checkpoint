@@ -110,8 +110,9 @@ nslookup %dns_2% >> %COMPUTERNAME%.txt
 @echo.  >> %COMPUTERNAME%.txt
 set /p "=." <nul
 
-@echo "External IP lookup with DNS (if empty allow firewall acess to *.opendns.com)"  >> %COMPUTERNAME%.txt
-nslookup myip.opendns.com. resolver1.opendns.com 2>nul >> %COMPUTERNAME%.txt
+@echo "Curl External IP lookup with DNS"  >> %COMPUTERNAME%.txt
+curl -s -k https://myip.dnsomatic.com >> %COMPUTERNAME%.txt
+rem nslookup myip.opendns.com. resolver1.opendns.com 2>nul >> %COMPUTERNAME%.txt
 @echo. >> %COMPUTERNAME%.txt
 set /p "=." <nul
 
